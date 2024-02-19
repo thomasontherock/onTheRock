@@ -1,0 +1,30 @@
+*
+{
+    margin: 0;
+    padding: 0;
+
+}
+.schaakbord{
+    width: 640px;
+    height: 640px;
+    margin: 20px;
+    border: 25px solid black;
+}
+.zwart{
+    background-color: #779954;
+    width: 80px;
+    height: 80px;
+    float: left;
+    font-size: 70px;
+    text-align: center;
+    vertical-align: middle;
+}
+.wit{
+    background-color: #e9edcc;
+    width: 80px;
+    height: 80px;
+    float: left;
+    font-size: 70px;
+    text-align: center;
+    vertical-align: middle;
+}

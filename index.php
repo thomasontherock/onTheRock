@@ -8,7 +8,7 @@ include("databaseconnection.php");
 </head>
 <body>
     <?php
-        include("schaakbord.php");
+     //include("schaakbord.php");
     ?>
     <button onclick="nextMove()"> > </button>
     <div id="moveNr">1.0</div>
@@ -16,6 +16,6 @@ include("databaseconnection.php");
     <?php
     include("resources.php");
     ?>
-    <script src="initialiseboard.js"></script>
+ <!--   <script src="initialiseboard.js"></script> -->
 </body>
 </html>

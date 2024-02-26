@@ -1,5 +1,4 @@
 setStartPosition();
-var currentMove = 1.0;
 function setStartPosition() {
     document.getElementById("a1").innerHTML="&#9814";
     document.getElementById("b1").innerHTML="&#9816";

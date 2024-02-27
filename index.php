@@ -10,6 +10,7 @@ include("databaseconnection.php");
     <?php
      include("schaakbord.php");
     ?>
+    <button onclick="startPos()">Start</button>
     <button onclick="nextMove()"> > </button>
     <div id="moveNr">0.5</div>
     <div id="pgn"> pgnViewer</div>

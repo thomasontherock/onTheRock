@@ -7,11 +7,11 @@ switch($piece){
         return "&#9823";
     case "wn":
         return "&#9816";
-    case "bn":
+    case "zn":
         return "&#9822";
     case "wb":
         return "&#9815";
-    case "bb":
+    case "zb":
         return "&#9821";
     case "wr":
         return "&#9814";
@@ -23,7 +23,7 @@ switch($piece){
         return "&#9819";
     case "wk":
         return "&#9812";
-    case "bk": 
+    case "zk": 
         return "&#9818";
     default:
         return "ERROR";

@@ -66,10 +66,6 @@ for($i = 1; $i <= ($moveAmount * 3) ; $i++){
     array_push($actions,$move);  
   }
 }
-echo "<pre>";
-  print_r($actions);
-echo "</pre>";
-//print_r($parts);
 echo "<table>";
   echo "<tr>";
     echo "<th>Move</th>";
@@ -84,6 +80,11 @@ echo "<table>";
     echo "</tr>";
   }
 echo "</table>";
+echo "<pre>";
+  print_r($actions);
+echo "</pre>";
+//print_r($parts);
+
 echo "<script>";
 
 ?>
@@ -92,32 +93,79 @@ console.log(currentMove);
 function nextMove() {
     currentMove = currentMove + 0.5;    
     document.getElementById("moveNr").innerHTML=currentMove;
-    console.log(currentMove);
     applyMove(currentMove);   
+  }
+  function previousMove() {
+    currentMove = currentMove - 0.5;    
+    document.getElementById("moveNr").innerHTML=currentMove;
+    if(currentMove % 1 == 0){
+
+    };   
   }
   
   function applyMove(newMove){
     <?php
-      for($i = 0; $i < count($actions) ; $i++){
-        echo "if (newMove == ". $actions[$i][0] . "){";
-          echo 'document.getElementById("' . substr($actions[$i][1][0] , -2) . '").innerHTML= " ";';
-          echo 'document.getElementById("' . substr($actions[$i][1][1] , -2) . '").innerHTML= "'. getVisualPiece($actions[$i][1][2]) . '"';
-        echo "}";
-        echo "if (newMove == ". ($actions[$i][0] + 0.5) . "){";
-          echo 'document.getElementById("' . substr($actions[$i][2][0] , -2) . '").innerHTML= " ";';
-          echo 'document.getElementById("' . substr($actions[$i][2][1] , -2) . '").innerHTML= "'. getVisualPiece($actions[$i][2][2]) . '"';
-        echo "}";
-      }     
+      // for($i = 0; $i < count($actions) ; $i++){
+      //   echo "if (newMove == ". $actions[$i][0] . "){";
+      //     echo 'document.getElementById("' . substr($actions[$i][1][0] , -2) . '").innerHTML= " ";';
+      //     echo 'document.getElementById("' . substr($actions[$i][1][1] , -2) . '").innerHTML= "'. getVisualPiece($actions[$i][1][2]) . '"';
+      //   echo "}";
+      //   echo "if (newMove == ". ($actions[$i][0] + 0.5) . "){";
+      //     echo 'document.getElementById("' . substr($actions[$i][2][0] , -2) . '").innerHTML= " ";';
+      //     echo 'document.getElementById("' . substr($actions[$i][2][1] , -2) . '").innerHTML= "'. getVisualPiece($actions[$i][2][2]) . '"';
+      //   echo "}";
+      // }     
       ?>
   } 
 <?php
 showPosition("startPos()", getStartPosition(), 0.5);
-for($i = 0; $i < count($actions) ; $i++){
-  $a = "goToMove" . ($i +1) ."w()";
-  $b = "goToMove" . ($i +1) ."z()";
-  showPosition($a, $actions[$i][1][5], ($i +1));
-  showPosition($b, $actions[$i][2][5], ($i +1.5));
-}
-
+// for($i = 0; $i < count($actions) ; $i++){
+//   $a = "goToMove" . ($i +1) ."w()";
+//   $b = "goToMove" . ($i +1) ."z()";
+//   showPosition($a, $actions[$i][1][5], ($i +1));
+//   showPosition($b, $actions[$i][2][5], ($i +1.5));
+//}
+echo "function goToMove(moveNr){";
+  $allSquares= array(
+    "a1","b1","c1","d1","e1","f1","g1","h1",
+    "a2","b2","c2","d2","e2","f2","g2","h2",
+    "a3","b3","c3","d3","e3","f3","g3","h3",
+    "a4","b4","c4","d4","e4","f4","g4","h4",
+    "a5","b5","c5","d5","e5","f5","g5","h5",
+    "a6","b6","c6","d6","e6","f6","g6","h6",
+    "a7","b7","c7","d7","e7","f7","g7","h7",
+    "a8","b8","c8","d8","e8","f8","g8","h8",   
+    );
+      for($i = 0; $i < count($actions) ; $i++){
+         echo "if(moveNr == ". ($i +1) . "){";          
+         foreach($allSquares as $square){
+            if(isset($actions[$i][1][5][$square]) && !empty($actions[$i][1][5][$square])){
+               echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($actions[$i][1][5][$square]) . '";'; 
+               echo 'linebreak = document.createElement("br");';
+               echo 'document.appendChild(linebreak);';
+             }
+            else{
+               echo 'document.getElementById("' . $square . '").innerHTML= " ";';
+               echo 'linebreak = document.createElement("br");';
+               echo 'document.appendChild(linebreak);';     
+            }
+          }
+          echo "}";
+          echo "if(moveNr == ". ($i +1.5) . "){";
+            foreach($allSquares as $square){
+              if(isset($actions[$i][2][5][$square]) && !empty($actions[$i][1][5][$square])){
+                 echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($actions[$i][1][5][$square]) . '";'; 
+                 echo 'linebreak = document.createElement("br");';
+                 echo 'document.appendChild(linebreak);';
+               }
+              else{
+                 echo 'document.getElementById("' . $square . '").innerHTML= " ";';
+                 echo 'linebreak = document.createElement("br");';
+                 echo 'document.appendChild(linebreak);';     
+              }
+            } 
+            echo "}";
+    } 
+echo "}";
 echo "</script>";
 ?>

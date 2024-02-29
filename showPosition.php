@@ -14,12 +14,12 @@ function showPosition($jsName,$position,$moveNr){
     foreach($allSquares as $square){
         if(isset($position[$square]) && !empty($position[$square])){
             echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($position[$square]) . '";'; 
-            echo 'linebreak = document.createElement("br");';
+            echo 'linebreak = document.body.createElement("br");';
             echo 'document.appendChild(linebreak);';
         }
         else{
             echo 'document.getElementById("' . $square . '").innerHTML= " ";';
-            echo 'linebreak = document.createElement("br");';
+            echo 'linebreak = document.body.createElement("br");';
             echo 'document.appendChild(linebreak);';     
         }
     } 
@@ -27,3 +27,5 @@ function showPosition($jsName,$position,$moveNr){
     echo "document.getElementById('moveNr').innerHTML=" . $moveNr .";";
     echo "}";
 }
+
+

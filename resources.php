@@ -4,7 +4,7 @@ require "getVisualPiece.php";
 require "getStartPosition.php";
 require "showPosition.php";
 
-$sql = "SELECT game FROM game WHERE id='2'";
+$sql = "SELECT game FROM game WHERE id='3'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
@@ -29,41 +29,82 @@ echo $moveAmount;
 $toRemove = array("#","+");
 $cleanGames = str_replace($toRemove, "", $game);
 $parts = explode(" ", $cleanGames);
-$rawparts = explode(" ", $game);
+$rawparts = str_replace('ck-ck', '0-0', $game);
+$rawparts = str_replace('cq-cq', '0-0-0', $game);
+$rawparts = explode(" ", $rawparts);
 
+ 
+echo "<pre>" . print_r($rawparts) ."<br>";
 
 $currentmove = 0;
 $actions = [];
 $currentPos = getStartPosition();
 for($i = 1; $i <= ($moveAmount * 3) ; $i++){
   if($i % 3 == 1){
-    $currentmove = str_replace(".","",$parts[($i-1)]);
+    $currentmove = str_replace(".","",$parts[($i-1)]); 
     $move = [$currentmove];
+    
     //array_push($actions, $currentmove);
   }
   elseif($i % 3 == 2){
     $moves = explode("-", $parts[($i-1)]);
     array_push($moves, getPiece($moves[0][0] , true));
-    $rawMoves = explode("-", $rawparts[($i-1)]);
-    array_push($moves, $rawMoves[1]);
+    if(str_contains($rawparts[($i-1)], "0")){
+      array_push($moves, $rawparts[($i-1)]);
+    }
+    else{
+      $rawMoves = explode("-", $rawparts[($i-1)]);
+      array_push($moves, $rawMoves[1]);
+    }
     array_push($moves, $currentPos);
+    echo $moves[0];
+    if($moves[0] == "cq"){
+      echo 'hoi';
+      unset($currentPos["e1"]);
+      unset($currentPos["a1"]);
+      $currentPos["c1"] = "wk";
+      $currentPos["d1"] = "wr";
+    }
+    if($moves[0] == "ck"){
+      unset($currentPos["e1"]);
+      unset($currentPos["h1"]);
+      $currentPos["g1"] = "wk";
+      $currentPos["f1"] = "wr";
+    }
+    else{
     unset($currentPos[substr($moves[0], -2)]);
     $currentPos[substr($moves[1], -2)] = getPiece($moves[0][0] , true);
+    }
     array_push($moves, $currentPos);
     array_push($move,$moves);
   }
   else{
+    if(isset($parts[($i-1)])){
     $moves = explode("-", $parts[($i-1)]);
-    array_push($moves, getPiece($moves[0][0] , false));
-    $rawMoves = explode("-", $rawparts[($i-1)]);
-    array_push($moves, $rawMoves[1]);
-    
-    array_push($moves, $currentPos);
-    unset($currentPos[substr($moves[0], -2)]);
-    $currentPos[substr($moves[1], -2)] = getPiece($moves[0][0] , false);
-    array_push($moves, $currentPos);
-    array_push($move,$moves);
-    array_push($actions,$move);  
+      array_push($moves, getPiece($moves[0][0] , false));
+      $rawMoves = explode("-", $rawparts[($i-1)]);
+      array_push($moves, $rawMoves[1]);
+      array_push($moves, $currentPos);
+      if($moves[0] == "cq"){
+        unset($currentPos["e8"]);
+        unset($currentPos["a8"]);
+        $currentPos["c8"] = "wk";
+        $currentPos["d8"] = "wr";
+      }
+      if($moves[0] == "ck"){
+        unset($currentPos["e8"]);
+        unset($currentPos["h8"]);
+        $currentPos["g8"] = "wk";
+        $currentPos["f8"] = "wr";
+      }
+      else{
+        unset($currentPos[substr($moves[0], -2)]);
+        $currentPos[substr($moves[1], -2)] = getPiece($moves[0][0] , false);
+      }
+      array_push($moves, $currentPos);
+      array_push($move,$moves);
+      array_push($actions,$move);
+    }  
   }
 }
 echo "<table>";
@@ -75,8 +116,17 @@ echo "<table>";
   for($i = 1; $i <= count($actions) ; $i++){
     echo "<tr>";
       echo "<td>" . $i . "</td>";
-      echo '<td><button onclick="goToMove'. $i . 'w()">' . $actions[($i-1)][1][3] . '</td>';
-      echo '<td><button onclick="goToMove'. $i . 'z()">'. $actions[($i-1)][2][3] . '</td>';
+      echo '<td><button onclick="goToMove('. $i . ')">' . $actions[($i-1)][1][3] . '</td>';
+      if(isset($actions[($i-1)][2][3])){
+      echo '<td>';
+        if($actions[($i-1)][2][3] != "0" && $actions[($i-1)][2][3] != "1"){
+          echo '<button onclick="goToMove('. ($i + 0.5) . ')">'. $actions[($i-1)][2][3] . '</td>';
+        }
+      echo '</td>';
+      }
+      else{
+      echo "<td></td>";
+    }
     echo "</tr>";
   }
 echo "</table>";
@@ -89,43 +139,31 @@ echo "<script>";
 
 ?>
 var currentMove = 0.5;
-console.log(currentMove);
 function nextMove() {
+    <?php
+    if(!$actions[($moveAmount - 1)][2][2] == "Unknown piece"){ 
+      echo "if (currentMove <". ($moveAmount + 0.4). "){";
+    } 
+    else {
+      echo "if (currentMove <". ($moveAmount). "){";
+    }
+    ?>
     currentMove = currentMove + 0.5;    
     document.getElementById("moveNr").innerHTML=currentMove;
-    applyMove(currentMove);   
-  }
+    goToMove(currentMove);
+  <?php echo "}"; ?>   
+}
   function previousMove() {
-    currentMove = currentMove - 0.5;    
-    document.getElementById("moveNr").innerHTML=currentMove;
-    if(currentMove % 1 == 0){
-
-    };   
+    if(currentMove > 0.5){
+      currentMove = currentMove - 0.5;    
+      document.getElementById("moveNr").innerHTML=currentMove;
+      goToMove(currentMove);
+    }   
   }
-  
-  function applyMove(newMove){
-    <?php
-      // for($i = 0; $i < count($actions) ; $i++){
-      //   echo "if (newMove == ". $actions[$i][0] . "){";
-      //     echo 'document.getElementById("' . substr($actions[$i][1][0] , -2) . '").innerHTML= " ";';
-      //     echo 'document.getElementById("' . substr($actions[$i][1][1] , -2) . '").innerHTML= "'. getVisualPiece($actions[$i][1][2]) . '"';
-      //   echo "}";
-      //   echo "if (newMove == ". ($actions[$i][0] + 0.5) . "){";
-      //     echo 'document.getElementById("' . substr($actions[$i][2][0] , -2) . '").innerHTML= " ";';
-      //     echo 'document.getElementById("' . substr($actions[$i][2][1] , -2) . '").innerHTML= "'. getVisualPiece($actions[$i][2][2]) . '"';
-      //   echo "}";
-      // }     
-      ?>
-  } 
 <?php
-showPosition("startPos()", getStartPosition(), 0.5);
-// for($i = 0; $i < count($actions) ; $i++){
-//   $a = "goToMove" . ($i +1) ."w()";
-//   $b = "goToMove" . ($i +1) ."z()";
-//   showPosition($a, $actions[$i][1][5], ($i +1));
-//   showPosition($b, $actions[$i][2][5], ($i +1.5));
-//}
 echo "function goToMove(moveNr){";
+  echo 'currentMove = moveNr;';
+  echo 'document.getElementById("moveNr").innerHTML=currentMove;';
   $allSquares= array(
     "a1","b1","c1","d1","e1","f1","g1","h1",
     "a2","b2","c2","d2","e2","f2","g2","h2",
@@ -136,32 +174,47 @@ echo "function goToMove(moveNr){";
     "a7","b7","c7","d7","e7","f7","g7","h7",
     "a8","b8","c8","d8","e8","f8","g8","h8",   
     );
+    echo "if(moveNr == 0.5){";
+      $startPos = getStartPosition();
+      foreach ($allSquares as $square) {
+        if(isset($startPos[$square]) && !empty($startPos[$square])){
+          echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($startPos[$square]) . '";'; 
+          echo 'linebreak = document.createElement("br");';
+          echo 'document.body.appendChild(linebreak);';
+        }
+        else{
+          echo 'document.getElementById("' . $square . '").innerHTML= " ";';
+          echo 'linebreak = document.createElement("br");';
+          echo 'document.body.appendChild(linebreak);';     
+       }
+      }
+    echo "};";
       for($i = 0; $i < count($actions) ; $i++){
          echo "if(moveNr == ". ($i +1) . "){";          
          foreach($allSquares as $square){
             if(isset($actions[$i][1][5][$square]) && !empty($actions[$i][1][5][$square])){
                echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($actions[$i][1][5][$square]) . '";'; 
                echo 'linebreak = document.createElement("br");';
-               echo 'document.appendChild(linebreak);';
+               echo 'document.body.appendChild(linebreak);';
              }
             else{
                echo 'document.getElementById("' . $square . '").innerHTML= " ";';
                echo 'linebreak = document.createElement("br");';
-               echo 'document.appendChild(linebreak);';     
+               echo 'document.body.appendChild(linebreak);';     
             }
           }
           echo "}";
           echo "if(moveNr == ". ($i +1.5) . "){";
             foreach($allSquares as $square){
-              if(isset($actions[$i][2][5][$square]) && !empty($actions[$i][1][5][$square])){
-                 echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($actions[$i][1][5][$square]) . '";'; 
+              if(isset($actions[$i][2][5][$square]) && !empty($actions[$i][2][5][$square])){
+                 echo 'document.getElementById("' . $square . '").innerHTML="'. getVisualPiece($actions[$i][2][5][$square]) . '";'; 
                  echo 'linebreak = document.createElement("br");';
-                 echo 'document.appendChild(linebreak);';
+                 echo 'document.body.appendChild(linebreak);';
                }
               else{
                  echo 'document.getElementById("' . $square . '").innerHTML= " ";';
                  echo 'linebreak = document.createElement("br");';
-                 echo 'document.appendChild(linebreak);';     
+                 echo 'document.body.appendChild(linebreak);';     
               }
             } 
             echo "}";

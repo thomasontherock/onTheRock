@@ -20,14 +20,14 @@ function getPiece(string $piece, bool $color){
         return "wn";
       }
         else{
-          return "bn";
+          return "zn";
       }
     case "B":
       if($color){
         return "wb";
       }
       else{
-        return "bb";
+        return "zb";
       }
     case "R":
       if($color) {
@@ -48,7 +48,21 @@ function getPiece(string $piece, bool $color){
         return "wk";
       }
       else{
-        return "bk";
+        return "zk";
+      }
+    case "cq":
+      if($color){
+        return "cqw";
+      }
+      else{
+        return "cqz";
+      }
+    case "ck":
+      if($color){
+        return "ckw";
+      }
+      else{ 
+        return "ckz";
       }
     default:
     return "Unknown piece";

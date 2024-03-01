@@ -3,8 +3,9 @@ require "getPiece.php";
 require "getVisualPiece.php";
 require "getStartPosition.php";
 require "showPosition.php";
+require "pgnBuilder.php";
 
-$sql = "SELECT game FROM game WHERE id='3'";
+$sql = "SELECT game FROM game WHERE id='4'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
@@ -15,98 +16,7 @@ if ($result->num_rows > 0) {
 } else {
   echo "0 results";
 }
-$moveAmount = getTotalMoves($game);
-function getTotalMoves($game){
-  for ($i = 1; $i < 100; $i++) {
-      if(str_contains($game, ($i . '.'))) {
-      }
-      else{
-       return ($i - 1);         
-      }
-  }
-}
-echo $moveAmount;
-$toRemove = array("#","+");
-$cleanGames = str_replace($toRemove, "", $game);
-$parts = explode(" ", $cleanGames);
-$rawparts = str_replace('ck-ck', '0-0', $game);
-$rawparts = str_replace('cq-cq', '0-0-0', $game);
-$rawparts = explode(" ", $rawparts);
-
- 
-echo "<pre>" . print_r($rawparts) ."<br>";
-
-$currentmove = 0;
-$actions = [];
-$currentPos = getStartPosition();
-for($i = 1; $i <= ($moveAmount * 3) ; $i++){
-  if($i % 3 == 1){
-    $currentmove = str_replace(".","",$parts[($i-1)]); 
-    $move = [$currentmove];
-    
-    //array_push($actions, $currentmove);
-  }
-  elseif($i % 3 == 2){
-    $moves = explode("-", $parts[($i-1)]);
-    array_push($moves, getPiece($moves[0][0] , true));
-    if(str_contains($rawparts[($i-1)], "0")){
-      array_push($moves, $rawparts[($i-1)]);
-    }
-    else{
-      $rawMoves = explode("-", $rawparts[($i-1)]);
-      array_push($moves, $rawMoves[1]);
-    }
-    array_push($moves, $currentPos);
-    echo $moves[0];
-    if($moves[0] == "cq"){
-      echo 'hoi';
-      unset($currentPos["e1"]);
-      unset($currentPos["a1"]);
-      $currentPos["c1"] = "wk";
-      $currentPos["d1"] = "wr";
-    }
-    if($moves[0] == "ck"){
-      unset($currentPos["e1"]);
-      unset($currentPos["h1"]);
-      $currentPos["g1"] = "wk";
-      $currentPos["f1"] = "wr";
-    }
-    else{
-    unset($currentPos[substr($moves[0], -2)]);
-    $currentPos[substr($moves[1], -2)] = getPiece($moves[0][0] , true);
-    }
-    array_push($moves, $currentPos);
-    array_push($move,$moves);
-  }
-  else{
-    if(isset($parts[($i-1)])){
-    $moves = explode("-", $parts[($i-1)]);
-      array_push($moves, getPiece($moves[0][0] , false));
-      $rawMoves = explode("-", $rawparts[($i-1)]);
-      array_push($moves, $rawMoves[1]);
-      array_push($moves, $currentPos);
-      if($moves[0] == "cq"){
-        unset($currentPos["e8"]);
-        unset($currentPos["a8"]);
-        $currentPos["c8"] = "wk";
-        $currentPos["d8"] = "wr";
-      }
-      if($moves[0] == "ck"){
-        unset($currentPos["e8"]);
-        unset($currentPos["h8"]);
-        $currentPos["g8"] = "wk";
-        $currentPos["f8"] = "wr";
-      }
-      else{
-        unset($currentPos[substr($moves[0], -2)]);
-        $currentPos[substr($moves[1], -2)] = getPiece($moves[0][0] , false);
-      }
-      array_push($moves, $currentPos);
-      array_push($move,$moves);
-      array_push($actions,$move);
-    }  
-  }
-}
+$actions = pgnBuilder($game);
 echo "<table>";
   echo "<tr>";
     echo "<th>Move</th>";
@@ -141,7 +51,8 @@ echo "<script>";
 var currentMove = 0.5;
 function nextMove() {
     <?php
-    if(!$actions[($moveAmount - 1)][2][2] == "Unknown piece"){ 
+    $moveAmount = count($actions);
+    if(isset($actions[($moveAmount - 1)][2][2]) && !$actions[($moveAmount - 1)][2][2] == "Unknown piece"){ 
       echo "if (currentMove <". ($moveAmount + 0.4). "){";
     } 
     else {

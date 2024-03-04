@@ -13,10 +13,8 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
     $gFile = array("g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8");
     $hFile = array("h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8");
     
-    if(str_contains($move, "x")){
-        //echo 'capture at move ' . $move;
-    }
-    elseif(str_contains($move, "=")){
+
+    if(str_contains($move, "=")){
         //echo 'promotion at move ' . $move;
     }
     elseif(str_contains($move, "O-O")){
@@ -29,73 +27,95 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
         $piece = getPiece($move[0], $isWhiteMove);
         $movedfrom = "";
         if($move[0] == "a" || $move[0] == "b" || $move[0] == "c" || $move[0] == "d" || $move[0] == "e" || $move[0] == "f" || $move[0] == "g" || $move[0] == "h"){
-            if($isWhiteMove){
-                
-                if (isset($currentPos[$move[0] . ($move[1] - 1)]) && $currentPos[$move[0] . ($move[1] - 1)] == $piece){
-                    $movedfrom = $move[0] . ($move[1] - 1);
-
-                }
-                elseif(isset($currentPos[$move[0] . ($move[1] - 2)]) && $currentPos[$move[0] . ($move[1] - 2)] == $piece){
-                    $movedfrom = $move[0] . ($move[1] - 2);
+            if(str_contains($move, "x")){
+                if($isWhiteMove){
+                    $movedfrom = $move[0] . ($move[3] - 1);
+                    if($currentPos[$movedfrom] != "wp"){
+                        echo "error: uknown where pawn moved from @ " . $move;
+                    }
                 }
                 else{
-                    echo 'error cant locate pawn '. $move . ' ' . $currentmove;
+                    $movedfrom = $move[0] . ($move[3] + 1);
+                    if($currentPos[$movedfrom] != "zp"){
+                        echo "error: uknown where pawn moved from @ " . $move;
+                    }
                 }
-                unset($newPos[$movedfrom]);
-                $newPos[$move] = $piece; 
+
             }
             else{
-                if (isset($currentPos[$move[0] . ($move[1] + 1)]) && $currentPos[$move[0] . ($move[1] + 1)] == $piece){
-                    $movedfrom = $move[0] . ($move[1] + 1);
+                if($isWhiteMove){
+                    
+                    if (isset($currentPos[$move[0] . ($move[1] - 1)]) && $currentPos[$move[0] . ($move[1] - 1)] == $piece){
+                        $movedfrom = $move[0] . ($move[1] - 1);
 
-                }
-                elseif(isset($currentPos[$move[0] . ($move[1] + 2)]) && $currentPos[$move[0] . ($move[1] + 2)] == $piece){
-                    $movedfrom = $move[0] . ($move[1] + 2);
+                    }
+                    elseif(isset($currentPos[$move[0] . ($move[1] - 2)]) && $currentPos[$move[0] . ($move[1] - 2)] == $piece){
+                        $movedfrom = $move[0] . ($move[1] - 2);
+                    }
+                    else{
+                        echo 'error cant locate pawn '. $move . ' ' . $currentmove;
+                    }
+                    unset($newPos[$movedfrom]);
+                    $newPos[$move] = $piece; 
                 }
                 else{
-                    echo 'error cant locate pawn '. $move . ' ' . $currentmove;
+                    if (isset($currentPos[$move[0] . ($move[1] + 1)]) && $currentPos[$move[0] . ($move[1] + 1)] == $piece){
+                        $movedfrom = $move[0] . ($move[1] + 1);
+
+                    }
+                    elseif(isset($currentPos[$move[0] . ($move[1] + 2)]) && $currentPos[$move[0] . ($move[1] + 2)] == $piece){
+                        $movedfrom = $move[0] . ($move[1] + 2);
+                    }
+                    else{
+                        echo 'error cant locate pawn '. $move . ' ' . $currentmove;
+                    }
+                    unset($newPos[$movedfrom]);
+                    $newPos[$move] = $piece; 
                 }
-                unset($newPos[$movedfrom]);
-                $newPos[$move] = $piece; 
             }
         }
         if($move[0] == "R"){
-            if(strlen($move) == 4){
-                echo 'rookmove ' . $move;
-                if(is_numeric($move[1])){
-                    $movedfrom = $newPos[$move[3] . $move[1]];
-                }
-                else{                   
-                    $movedfrom = $newPos[$move[1] . $move[3]];
-                }
+            if(str_contains($move,"x")){
+
             }
-            if(strlen($move) == 3){
-                if($isWhiteMove){
-                    for ($i = $move[2]; $i <=8; $i++){
-                        if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){
-                            $movedfrom = $move[1] . $i ;
-                            break;
-                        }  
+            else{
+                if(strlen($move) == 4){
+                    echo 'rookmove ' . $move;
+                    if(is_numeric($move[1])){
+                        $movedfrom = $newPos[$move[3] . $move[1]];
                     }
-                    for ($i = $move[2]; $i >=1; $i--){
-                        if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){
-                            $movedfrom = $move[1] . $i ;
-                            break;
-                        }  
+                    else{                   
+                        $movedfrom = $newPos[$move[1] . $move[3]];
                     }
                 }
-                else{
-                    for ($i = $move[2]; $i <=8; $i++){
-                        if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "zr"){
-                            $movedfrom = $move[1] . $i ;
-                            break;
-                        }  
+                if(strlen($move) == 3){
+                    if($isWhiteMove){
+                        for ($i = $move[2]; $i <=8; $i++){
+                            if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){
+                                $movedfrom = $move[1] . $i ;
+                                break;
+                            }  
+                        }
+                        for ($i = $move[2]; $i >=1; $i--){
+                            if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){
+                                $movedfrom = $move[1] . $i ;
+                                break;
+                            }  
+                        }
                     }
-                    for ($i = $move[2]; $i >=1; $i--){
-                        if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "zr"){
-                            $movedfrom = $move[1] . $i ;
-                            break;
-                        }  
+                    else{
+                        for ($i = $move[2]; $i <=8; $i++){
+                            if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "zr"){
+                                $movedfrom = $move[1] . $i ;
+                                break;
+                            }  
+                        }
+                        for ($i = $move[2]; $i >=1; $i--){
+                            if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "zr"){
+                                $movedfrom = $move[1] . $i ;
+                                break;
+                            }  
+                        }
                     }
                 }
             }

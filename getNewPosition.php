@@ -102,6 +102,18 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                                 break;
                             }  
                         }
+                        for ($i = letterToNumber($move[1]); $i <=7; $i++){
+                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "wr"){
+                                $movedfrom = $move[1] . letterToNumber($i) ;
+                                break;
+                            }  
+                        }
+                        for ($i = letterToNumber($move[1]); $i >=0; $i--){
+                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "wr"){                               
+                                $movedfrom = $move[1] . letterToNumber($i) ;
+                                break;
+                            }  
+                        }
                     }
                     else{
                         for ($i = $move[2]; $i <=8; $i++){
@@ -116,6 +128,18 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                                 break;
                             }  
                         }
+                        for ($i = letterToNumber($move[1]); $i <=7; $i++){
+                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "zr"){
+                                $movedfrom = $move[1] . letterToNumber($i) ;
+                                break;
+                            }  
+                        }
+                        for ($i = letterToNumber($move[1]); $i >=0; $i--){
+                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "zr"){
+                                $movedfrom = $move[1] . letterToNumber($i) ;
+                                break;
+                            }  
+                        }
                     }
                 }
             }
@@ -123,4 +147,12 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
         }        
     }
     return $newPos;
+}
+function letterToNumber ($letter){
+    $alphabet = range('a', 'z');
+    return array_search($letter, $alphabet);
+}
+function numberToLetter($number){
+    $alphabet = range('a', 'z');
+    return $alphabet[$number];
 }

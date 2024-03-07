@@ -43,8 +43,7 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
 
             }
             else{
-                if($isWhiteMove){
-                    
+                if($isWhiteMove){                    
                     if (isset($currentPos[$move[0] . ($move[1] - 1)]) && $currentPos[$move[0] . ($move[1] - 1)] == $piece){
                         $movedfrom = $move[0] . ($move[1] - 1);
 
@@ -76,11 +75,92 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
         }
         if($move[0] == "R"){
             if(str_contains($move,"x")){
-
+                
+                if(strlen($move) == 5){
+                    //echo 'hoiii ' . strlen($move);
+                    if(is_numeric($move[1])){
+                        $movedfrom = $newPos[$move[3] . $move[1]];
+                    }
+                    else{                   
+                        $movedfrom = $newPos[$move[1] . $move[3]];
+                    }
+                }
+                if(strlen($move) == 4){
+                    if($isWhiteMove){
+                        //echo 'hoiii ' . $move;
+                        for ($i = $move[3]; $i <=8; $i++){
+                            //echo 'move: ' . $move . ' checking ' .$move[2] . $i;
+                            if(isset($currentPos[$move[2] . $i]) && $currentPos[$move[2] . $i] == "wr"){
+                                $movedfrom = $move[2] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                        for ($i = $move[3]; $i >=1; $i--){
+                           // echo 'move: ' . $move . ' checking ' .$move[2] . $i;
+                            if(isset($currentPos[$move[2] . $i]) && $currentPos[$move[2] . $i] == "wr"){                               
+                                $movedfrom = $move[2] . $i ;
+                               // echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                        for ($i = letterToNumber($move[2]); $i <=7; $i++){  
+                            //echo 'move: ' . $move . ' checking ' .numberToLetter($i) . $move[3];                 
+                            if(isset($currentPos[numberToLetter($i) . $move[3]]) && $currentPos[numberToLetter($i) . $move[3]] == "wr"){
+                                $movedfrom = numberToLetter($i) . $move[3]; 
+                               // echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                        for ($i = letterToNumber($move[2]); $i >=0; $i--){
+                            //echo 'move: ' . $move . ' checking ' .$move[2] . letterToNumber($i); 
+                            if(isset($currentPos[numberToLetter($i) . $move[3]]) && $currentPos[numberToLetter($i) . $move[3]] == "wr"){                               
+                                $movedfrom = numberToLetter($i) . $move[3] ;
+                                //echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                    }
+                    else{
+                        echo 'hoiii ' . $move;
+                        for ($i = $move[3]; $i <=8; $i++){
+                            //echo 'move: ' . $move . ' checking ' .$move[2] . $i;
+                            if(isset($currentPos[$move[2] . $i]) && $currentPos[$move[2] . $i] == "zr"){
+                                $movedfrom = $move[2] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                        for ($i = $move[3]; $i >=1; $i--){
+                            //echo 'move: ' . $move . ' checking ' .$move[2] . $i;
+                            if(isset($currentPos[$move[2] . $i]) && $currentPos[$move[2] . $i] == "zr"){
+                                $movedfrom = $move[2] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                        for ($i = letterToNumber($move[2]); $i <=7; $i++){  
+                            //echo 'move: ' . $move . ' checking ' .numberToLetter($i) . $move[2];                 
+                            if(isset($currentPos[numberToLetter($i) . $move[3]]) && $currentPos[numberToLetter($i) . $move[3]] == "zr"){
+                                $movedfrom = numberToLetter($i) . $move[3]; 
+                                //echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                        for ($i = letterToNumber($move[2]); $i >=0; $i--){
+                            //echo 'move: ' . $move . ' checking ' .$move[1] . letterToNumber($i); 
+                            if(isset($currentPos[numberToLetter($i) . $move[3]]) && $currentPos[numberToLetter($i) . $move[3]] == "zr"){                               
+                                $movedfrom = numberToLetter($i) . $move[3] ;
+                                //echo 'found movedfrom: ' . $movedfrom;
+                                break;
+                            }  
+                        }
+                    }
+                }
             }
             else{
                 if(strlen($move) == 4){
-                    echo 'rookmove ' . $move;
+                   // echo 'rookmove ' . $move;
                     if(is_numeric($move[1])){
                         $movedfrom = $newPos[$move[3] . $move[1]];
                     }
@@ -91,26 +171,34 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                 if(strlen($move) == 3){
                     if($isWhiteMove){
                         for ($i = $move[2]; $i <=8; $i++){
+                            //echo 'move: ' . $move . ' checking ' .$move[1] . $i;
                             if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){
                                 $movedfrom = $move[1] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
                         for ($i = $move[2]; $i >=1; $i--){
-                            if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){
+                            //echo 'move: ' . $move . ' checking ' .$move[1] . $i;
+                            if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "wr"){                               
                                 $movedfrom = $move[1] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
-                        for ($i = letterToNumber($move[1]); $i <=7; $i++){
-                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "wr"){
-                                $movedfrom = $move[1] . letterToNumber($i) ;
+                        for ($i = letterToNumber($move[1]); $i <=7; $i++){  
+                            //echo 'move: ' . $move . ' checking ' .numberToLetter($i) . $move[2];                 
+                            if(isset($currentPos[numberToLetter($i) . $move[2]]) && $currentPos[numberToLetter($i) . $move[2]] == "wr"){
+                                $movedfrom = numberToLetter($i) . $move[2]; 
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
                         for ($i = letterToNumber($move[1]); $i >=0; $i--){
-                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "wr"){                               
-                                $movedfrom = $move[1] . letterToNumber($i) ;
+                            //echo 'move: ' . $move . ' checking ' .$move[1] . letterToNumber($i); 
+                            if(isset($currentPos[numberToLetter($i) . $move[2]]) && $currentPos[numberToLetter($i) . $move[2]] == "wr"){                               
+                                $movedfrom = numberToLetter($i) . $move[2] ;
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
@@ -119,31 +207,40 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                         for ($i = $move[2]; $i <=8; $i++){
                             if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "zr"){
                                 $movedfrom = $move[1] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
                         for ($i = $move[2]; $i >=1; $i--){
                             if(isset($currentPos[$move[1] . $i]) && $currentPos[$move[1] . $i] == "zr"){
                                 $movedfrom = $move[1] . $i ;
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
-                        for ($i = letterToNumber($move[1]); $i <=7; $i++){
-                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "zr"){
-                                $movedfrom = $move[1] . letterToNumber($i) ;
+                        for ($i = letterToNumber($move[1]); $i <=7; $i++){  
+                            //echo 'move: ' . $move . ' checking ' .numberToLetter($i) . $move[2];                 
+                            if(isset($currentPos[numberToLetter($i) . $move[2]]) && $currentPos[numberToLetter($i) . $move[2]] == "zr"){
+                                $movedfrom = numberToLetter($i) . $move[2]; 
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
                         for ($i = letterToNumber($move[1]); $i >=0; $i--){
-                            if(isset($currentPos[$move[1] . letterToNumber($i)]) && $currentPos[$move[1] . letterToNumber($i)] == "zr"){
-                                $movedfrom = $move[1] . letterToNumber($i) ;
+                            //echo 'move: ' . $move . ' checking ' .$move[1] . letterToNumber($i); 
+                            if(isset($currentPos[numberToLetter($i) . $move[2]]) && $currentPos[numberToLetter($i) . $move[2]] == "zr"){                               
+                                $movedfrom = numberToLetter($i) . $move[2] ;
+                                //echo 'found movedfrom: ' . $movedfrom;
                                 break;
                             }  
                         }
                     }
                 }
             }
-            echo 'move: ' . $move . ' movedfrom: ' .$movedfrom;
+            //echo 'move: ' . $move . ' movedfrom: ' .$movedfrom;
+            if(empty($movedfrom)){
+                echo 'error could not find: ' .$move;
+            }
         }        
     }
     return $newPos;

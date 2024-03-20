@@ -5,6 +5,7 @@ require "getStartPosition.php";
 require "showPosition.php";
 require "pgnBuilder.php";
 
+
 $sql = "SELECT game FROM game WHERE id='4'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {

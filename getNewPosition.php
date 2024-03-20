@@ -103,10 +103,12 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
             }
         }
         if($move[0] == "R"){
-            $newPos = getRookMove($currentPos, $move, $isWhiteMove, $currentmove);      
+            //$newPos = getRookMove($currentPos, $move, $isWhiteMove, $currentmove);      
         }   
         if($move[0] == "B"){
-            $newPos = getBishopMove($currentPos, $move, $isWhiteMove, $currentmove)
+            echo ' Bishop move: ' . $move;
+            $newPos = getBishopMove($currentPos, $move, $isWhiteMove, $currentmove);
+            echo ' end bishop move ';
         }     
     }
     return $newPos;

@@ -24,21 +24,19 @@ function findBishop($endRank, $endFile, $currentPos, $piece){
     if(!empty($movedfrom)){
         return $movedfrom;
     }
-    $movedfrom = checkLeftUp($squaretolook, $piece, $currentPos);
-    if(!empty($movedfrom)){
-        return $movedfrom;
+    $movedfrom1 = checkLeftUp($squaretolook, $piece, $currentPos);
+    if(!empty($movedfrom1)){
+        return $movedfrom1;
     }
-    $movedfrom = checkRightDown($squaretolook, $piece, $currentPos); 
-    echo 'hoooi' . $movedfrom;
-    if(!empty($movedfrom)){
-        return $movedfrom;
+    $movedfrom2 = checkRightDown($squaretolook, $piece, $currentPos); 
+    echo 'hoooi ' . $movedfrom2 . ' asdf';
+    if(!empty($movedfrom2)){
+        return $movedfrom2;
     }
-
-    $movedfrom = checkLeftDown($squaretolook, $piece, $currentPos);
-    if(!empty($movedfrom)){
-        return $movedfrom;
+    $movedfrom3 = checkLeftDown($squaretolook, $piece, $currentPos);
+    if(!empty($movedfrom3)){
+        return $movedfrom3;
     }
-    echo 'it moved from ' . $movedfrom;
     return $movedfrom;
 }
 function checkRightUp($square, $piece, $currentPos){
@@ -53,7 +51,7 @@ function checkRightUp($square, $piece, $currentPos){
         }
         else{
             echo 'nobisshop ' . $square;
-            checkrightUp($square, $piece, $currentPos);
+            return checkrightUp($square, $piece, $currentPos);
         }
     }
     else{
@@ -62,20 +60,18 @@ function checkRightUp($square, $piece, $currentPos){
 }
 function checkRightDown($square, $piece, $currentPos){
     $movedfrom = "";
-    if($square[0] != "i" && $square[1] != "0"){
+    if($square[0] != "h" && $square[1] != "1"){
         $rank = letterToNumber($square[0]);
         $rank++;
         $rank = numberToLetter($rank);
         $square = $rank . ($square[1] -1);
         if (checkSquare($square, $piece, $currentPos)){              
             echo 'RD found bishop at ' . $square;
-            $movedfrom = $square;  
-            echo 'hallo ' .$movedfrom;
-            
+            return $square;         
         }
         else{
             echo 'nobisshop ' . $square;
-            checkRightDown($square, $piece, $currentPos);
+            return checkRightDown($square, $piece, $currentPos);
         }
     }
     return $movedfrom; 
@@ -92,7 +88,7 @@ function checkLeftUp($square, $piece, $currentPos){
         }
         else{
             echo 'nobisshop ' . $square;
-            checkleftUp($square, $piece, $currentPos);
+            return checkleftUp($square, $piece, $currentPos);
         }
     }
     else{
@@ -111,11 +107,11 @@ function checkLeftDown($square, $piece, $currentPos){
         }
         else{
             echo 'nobisshop ' . $square;
-            checkleftDown($square, $piece, $currentPos);
+            return checkleftDown($square, $piece, $currentPos);
         }
     }
     else{
-    return "nope";
+    return;
     }
 }
 function checkSquare($square, $piece, $currentPos){

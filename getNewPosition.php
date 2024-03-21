@@ -1,6 +1,7 @@
 <?php
 require 'getRookMove.php';
 require 'getBishopMove.php';
+require 'getKnightMove.php';
 function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
     $newPos = $currentPos;
     $move = str_replace("+", "", $move);
@@ -106,10 +107,11 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
             //$newPos = getRookMove($currentPos, $move, $isWhiteMove, $currentmove);      
         }   
         if($move[0] == "B"){
-            echo ' Bishop move: ' . $move;
             $newPos = getBishopMove($currentPos, $move, $isWhiteMove, $currentmove);
-            echo ' end bishop move ';
         }     
+        if($move[0] == "N"){
+            $newPos = getKnightMove($currentPos, $move, $isWhiteMove, $currentmove);
+        }
     }
     return $newPos;
 }

@@ -29,7 +29,6 @@ function findBishop($endRank, $endFile, $currentPos, $piece){
         return $movedfrom1;
     }
     $movedfrom2 = checkRightDown($squaretolook, $piece, $currentPos); 
-    echo 'hoooi ' . $movedfrom2 . ' asdf';
     if(!empty($movedfrom2)){
         return $movedfrom2;
     }
@@ -46,11 +45,9 @@ function checkRightUp($square, $piece, $currentPos){
         $rank = numberToLetter($rank);
         $square = $rank . ($square[1] +1);
         if (checkSquare($square, $piece, $currentPos)){
-            echo 'RU found bishop at ' . $square;
             return $square;          
         }
         else{
-            echo 'nobisshop ' . $square;
             return checkrightUp($square, $piece, $currentPos);
         }
     }
@@ -66,11 +63,9 @@ function checkRightDown($square, $piece, $currentPos){
         $rank = numberToLetter($rank);
         $square = $rank . ($square[1] -1);
         if (checkSquare($square, $piece, $currentPos)){              
-            echo 'RD found bishop at ' . $square;
             return $square;         
         }
         else{
-            echo 'nobisshop ' . $square;
             return checkRightDown($square, $piece, $currentPos);
         }
     }
@@ -83,11 +78,9 @@ function checkLeftUp($square, $piece, $currentPos){
         $rank = numberToLetter($rank);
         $square = $rank . ($square[1] +1);
         if (checkSquare($square, $piece, $currentPos)){
-            echo 'LU found bishop at ' . $square;
             return $square;          
         }
         else{
-            echo 'nobisshop ' . $square;
             return checkleftUp($square, $piece, $currentPos);
         }
     }
@@ -102,11 +95,9 @@ function checkLeftDown($square, $piece, $currentPos){
         $rank = numberToLetter($rank);
         $square = $rank . ($square[1] -1);
         if (checkSquare($square, $piece, $currentPos)){
-            echo 'LD found bishop at ' . $square;
             return $square;          
         }
         else{
-            echo 'nobisshop ' . $square;
             return checkleftDown($square, $piece, $currentPos);
         }
     }

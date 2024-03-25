@@ -9,7 +9,7 @@ function getKnightMove($currentPos, $move, $isWhiteMove, $currentmove){
     else{
         $piece = "zn";
     } 
-    $newPos[$move[1] . $move[2]] = $piece; 
+    $newPos[substr($move, -2)] = $piece; 
     unset($newPos[findKnight($endSquare, $currentPos, $piece)]);
     return $newPos;
 }
@@ -55,10 +55,11 @@ function findKnight($square, $currentPos, $piece, $origin = false){
                 array_push($squaresToLook, $newrank . ($square[1] -2));
             }
         }
-        echo $square . '<br>';
-        echo '<pre>';
-        echo print_r($squaresToLook);
-        echo '</pre>';
+        foreach($squaresToLook as $square){
+            if(isset($currentPos[$square]) && $currentPos[$square] == $piece){
+                return $square;
+            }
+        }
     }
 
 }

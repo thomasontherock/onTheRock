@@ -1,6 +1,55 @@
 <?php
 function getRookMove($currentPos, $move, $isWhiteMove, $currentmove){
     $newPos = $currentPos;
+    if($isWhiteMove){
+        $piece = "wr";
+    }
+    else{
+        $piece = "zr";
+    } 
+    $newPos[substr($move, -2)] = $piece; 
+    unset($newPos[findRook(substr($move, -2), $currentPos, $piece)]);
+    return $newPos;
+}
+function findRook($square, $currentPos, $piece){
+    $squaresToCheck = [];
+    $array = [];
+    echo "hallooo" . $square;
+    for($i = (letterToNumber($square[0]) +1); $i < 8; $i++){
+        array_push($array, numberToLetter($i) . $square[1]);
+    }
+    if(!empty($array)){
+        array_push($squaresToCheck,  $array);
+    }
+    $array = [];    
+    for(($i = letterToNumber($square[0]) -1); $i >= 0; $i--){
+        array_push($array, numberToLetter($i) . $square[1]);
+    }
+    if(!empty($array)){
+        array_push($squaresToCheck,  $array);
+    }  
+    $array = [];   
+    for($i = $square[1] +1; $i <= 8; $i++){
+        array_push($array, $square[0] . $i);
+    }
+    if(!empty($array)){
+        array_push($squaresToCheck,  $array);
+    }  
+    $array = [];   
+    for($i = $square[1] -1; $i > 0; $i--){
+        array_push($array, $square[0] . $i);
+    }
+    if(!empty($array)){
+        array_push($squaresToCheck,  $array);
+    }
+    echo '<pre>';
+    echo print_r($squaresToCheck);
+    echo '</pre>';    
+    $newSquare = "";
+    return $newSquare;
+}
+function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){
+    $newPos = $currentPos;
     if(str_contains($move,"x")){
         if(strlen($move) == 5){
             //echo 'hoiii ' . strlen($move);

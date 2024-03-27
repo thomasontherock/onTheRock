@@ -14,7 +14,6 @@ function getRookMove($currentPos, $move, $isWhiteMove, $currentmove){
 function findRook($square, $currentPos, $piece){
     $squaresToCheck = [];
     $array = [];
-    echo "hallooo" . $square;
     for($i = (letterToNumber($square[0]) +1); $i < 8; $i++){
         array_push($array, numberToLetter($i) . $square[1]);
     }
@@ -42,10 +41,11 @@ function findRook($square, $currentPos, $piece){
     if(!empty($array)){
         array_push($squaresToCheck,  $array);
     }
-    echo '<pre>';
-    echo print_r($squaresToCheck);
-    echo '</pre>';    
-    $newSquare = "";
+    // echo '<pre>';
+    // echo print_r($squaresToCheck);
+    
+    // echo '</pre>';    
+    $newSquare = findOriginPiece($squaresToCheck, $currentPos, $piece);;
     return $newSquare;
 }
 function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){

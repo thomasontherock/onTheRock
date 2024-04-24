@@ -1,15 +1,16 @@
 <?php 
 function findOriginPiece($moves, $currentPos, $piece){
     foreach ($moves as $squares){
-        print_r($squares);
+        if($piece == "bq"){
+            print_r($square);
+        }
         foreach($squares as $square)
         {
             echo $square;
             if(isset($currentPos[$square])){
                 if($currentPos[$square] == $piece){
-                    echo 'found piece ' . $square;
-                    return $square;
-                    
+                    echo 'found ' .$piece . ' on '. $square;
+                    return $square;                   
                 }
                 else{
                     break;
@@ -17,5 +18,6 @@ function findOriginPiece($moves, $currentPos, $piece){
             }
         }
     }
+    echo 'dit not find ' . $piece;
     return;
 }

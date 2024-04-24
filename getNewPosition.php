@@ -39,7 +39,6 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
         }
     }
     elseif(str_contains($move, 'O-O-O')){
-        echo 'castle queenside at move ' . $move;
         if($isWhiteMove){
             unset($newPos["e1"]);
             unset($newPos["a1"]);
@@ -56,10 +55,12 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
         }
     }
     else{
-        $piece = getPiece($move[0], $isWhiteMove);
-        $movedfrom = "";
+        $piece = getPiece($move[0], $isWhiteMove);       
         if($move[0] == "a" || $move[0] == "b" || $move[0] == "c" || $move[0] == "d" || $move[0] == "e" || $move[0] == "f" || $move[0] == "g" || $move[0] == "h"){
+            $movedfrom = "";
+            $newsquare = "";
             if(str_contains($move, "x")){
+                $newsquare = $move[2] . $move[3];
                 if($isWhiteMove){
                     $movedfrom = $move[0] . ($move[3] - 1);
                     if($currentPos[$movedfrom] != "wp"){
@@ -72,9 +73,9 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                         echo "error: uknown where pawn moved from @ " . $move;
                     }
                 }
-
             }
             else{
+                $newsquare = $move;
                 if($isWhiteMove){                    
                     if (isset($currentPos[$move[0] . ($move[1] - 1)]) && $currentPos[$move[0] . ($move[1] - 1)] == $piece){
                         $movedfrom = $move[0] . ($move[1] - 1);
@@ -86,8 +87,6 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                     else{
                         echo 'error cant locate pawn '. $move . ' ' . $currentmove;
                     }
-                    unset($newPos[$movedfrom]);
-                    $newPos[$move] = $piece; 
                 }
                 else{
                     if (isset($currentPos[$move[0] . ($move[1] + 1)]) && $currentPos[$move[0] . ($move[1] + 1)] == $piece){
@@ -100,10 +99,11 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                     else{
                         echo 'error cant locate pawn '. $move . ' ' . $currentmove;
                     }
-                    unset($newPos[$movedfrom]);
-                    $newPos[$move] = $piece; 
+                    
                 }
             }
+            unset($newPos[$movedfrom]);
+            $newPos[$newsquare] = $piece; 
         }
         if($move[0] == "R"){
             $newPos = getRookMove($currentPos, $move, $isWhiteMove, $currentmove);      

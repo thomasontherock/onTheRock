@@ -138,13 +138,8 @@ function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){
             if(is_numeric($move[1])){
                 $movedfrom = $newPos[$move[3] . $move[1]];
             }
-            else{  
-                echo 'hallotjes ' . $move[1] . $move[3];
-                echo 'for move ' . $move;                  
+            else{                 
                 $movedfrom = $newPos[$move[1] . $move[3]];
-                if(!isset($newPos[$move[1] . $move[3]])){
-                    echo 'no rook at ' . $newPos[$move[1] . $move[3]];
-                }
             }
         }
         if(strlen($move) == 3){
@@ -217,7 +212,7 @@ function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){
         }
           //echo 'move: ' . $move . ' movedfrom: ' .$movedfrom;
           if(empty($movedfrom)){
-            echo 'empty movedfrom! error could not find: ' .$move;
+            echo 'empty movedfrom! error could not find rookmove: ' .$move;
         }
         unset($newPos[$movedfrom]);
         if($isWhiteMove){

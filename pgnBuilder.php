@@ -32,7 +32,7 @@ function chessComPgn($game){
             $currentPos = getNewPosition($currentPos, $parts[$i], true, $currentmove);
             array_push($move, $currentPos);
             array_push($moves, $move);
-            
+            array_push($returnarray, $moves);
         }
         if($i % 8 == 5){
             $move = [];
@@ -42,12 +42,13 @@ function chessComPgn($game){
             $currentPos = getNewPosition($currentPos, $parts[$i], false, $currentmove);
             array_push($move, $currentPos);
             array_push($moves, $move);
+            array_push($returnarray, $moves);
         }
         
+        $moves = [];
     }
-    
     echo '<pre>';
-    print_r($moves);
+    print_r($returnarray);
     echo '</pre>';
     return $returnarray;    
 }

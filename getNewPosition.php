@@ -3,6 +3,7 @@ require 'getRookMove.php';
 require 'getBishopMove.php';
 require 'getKnightMove.php';
 require 'getQueenMove.php';
+require 'getKingMove.php';
 require 'findOriginPiece.php';
 function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
     $newPos = $currentPos;
@@ -116,6 +117,9 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
         }
         if($move[0] == "Q"){
             $newPos = getQueenMove($currentPos, $move, $isWhiteMove, $currentmove);
+        }
+        if($move[0] == "K"){
+            $newPos = getKingMove($currentPos, $move, $isWhiteMove, $currentmove);
         }
     }
     return $newPos;

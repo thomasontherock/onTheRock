@@ -11,7 +11,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
-    echo "game: " . $row["game"]. "<br>";
+    //echo "game: " . $row["game"]. "<br>";
     $game = $row["game"];
   }
 } else {
@@ -38,9 +38,9 @@ echo "<table>";
     
   }
 echo "</table>";
-echo "<pre>";
-  print_r($actions);
-echo "</pre>";
+// echo "<pre>";
+//   print_r($actions);
+// echo "</pre>";
 //print_r($parts);
 
 echo "<script>";

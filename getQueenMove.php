@@ -18,82 +18,89 @@ function findQueen($square, $currentPos, $piece){
         array_push($array, numberToLetter($i) . $square[1]);
     }
     // if(!empty($array)){
-    //     array_push($squaresToCheck,  $array);
+        array_push($squaresToCheck,  $array);
     // }
-    // $array = [];    
+    $array = [];    
     for(($i = letterToNumber($square[0]) -1); $i >= 0; $i--){
         array_push($array, numberToLetter($i) . $square[1]);
     }
     // if(!empty($array)){
-    //     array_push($squaresToCheck,  $array);
+        array_push($squaresToCheck,  $array);
     // }  
-    // $array = [];   
+    $array = [];   
     for($i = $square[1] +1; $i <= 8; $i++){
         array_push($array, $square[0] . $i);
     }
     // if(!empty($array)){
-    //     array_push($squaresToCheck,  $array);
+        array_push($squaresToCheck,  $array);
     // }  
-    // $array = [];   
+    $array = [];   
     for($i = $square[1] -1; $i > 0; $i--){
         array_push($array, $square[0] . $i);
     }
     // if(!empty($array)){
-    //     array_push($squaresToCheck,  $array);
+        array_push($squaresToCheck,  $array);
     // }
     $currentFile = $square[1];
-    // $array = [];
-    for($i = letterToNumber($square[0] +1); $i < 8; $i++){
-        if($currentFile > 7){
+    $array = [];
+    for($i = letterToNumber($square[0]); $i < 8; $i++){
+        if($currentFile > 8){
             break;
         }
-        else{        
-            array_push($array, numberToLetter($i) . $currentFile);
+        else{ 
+            if(numberToLetter($i) . $currentFile != $square){       
+                array_push($array, numberToLetter($i) . $currentFile);
+            }
             $currentFile++;
         }
     }
-    // array_push($squaresToCheck,$array);
-    // $array = [];
+    array_push($squaresToCheck,$array);
+    $array = [];
     $currentFile = $square[1];
-    for($i = letterToNumber($square[0] -1); $i > 1; $i--){
-        if($currentFile > 7){
+    for($i = letterToNumber($square[0]); $i >= 0; $i--){
+        if($currentFile > 8){
             break;
         }
         else{
-            
-            array_push($array, numberToLetter($i) . $currentFile);
+            if(numberToLetter($i) . $currentFile != $square){       
+                array_push($array, numberToLetter($i) . $currentFile);
+            }
             $currentFile++;
         }
     }
-    // array_push($squaresToCheck,$array);
-    // $array = [];
+    array_push($squaresToCheck,$array);
+    $array = [];
     $currentFile = $square[1];
-    for($i = letterToNumber($square[0] -1); $i > 1; $i--){
+    for($i = letterToNumber($square[0]); $i >= 0; $i--){
         if($currentFile < 1){
             break;
         }
         else{         
-            array_push($array, numberToLetter($i) . $currentFile);
+            if(numberToLetter($i) . $currentFile != $square){       
+                array_push($array, numberToLetter($i) . $currentFile);
+            }
             $currentFile--;
         }
     }
-    // array_push($squaresToCheck,$array);
+    array_push($squaresToCheck,$array);
     $currentFile = $square[1];
-    // $array = [];
-    for($i = letterToNumber($square[0] +1); $i < 8; $i++){
+    $array = [];
+    for($i = letterToNumber($square[0]); $i < 8; $i++){
         if($currentFile < 1){
             break;
         }
         else{
-            
-            array_push($array, numberToLetter($i) . $currentFile);
+            if(numberToLetter($i) . $currentFile != $square){       
+                array_push($array, numberToLetter($i) . $currentFile);
+            }
             $currentFile--;
         }
     }
-    
     array_push($squaresToCheck,$array);
-    print_r($array);
-    echo 'check ' .$piece . ' for square '. $square . ';';
+    // echo '<pre>';
+    // print_r($squaresToCheck);
+    // echo '</pre>';
+    // echo 'check ' .$piece . ' for square '. $square . ';';
     $newSquare = findOriginPiece($squaresToCheck, $currentPos, $piece);;
     return $newSquare;
 }

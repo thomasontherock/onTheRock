@@ -15,9 +15,9 @@ function chessComPgn($game){
     $parts = explode(" ", $game);
     $currentmove = 0;
     $currentPos = getStartPosition();
-    echo '<pre>';
-    echo print_r($parts);
-    echo '</pre>';
+    // echo '<pre>';
+    // echo print_r($parts);
+    // echo '</pre>';
     $moves = [];
     for($i = 0; $i < count($parts); $i++)
     {
@@ -47,9 +47,9 @@ function chessComPgn($game){
         
         $moves = [];
     }
-    echo '<pre>';
-    print_r($returnarray);
-    echo '</pre>';
+    // echo '<pre>';
+    // print_r($returnarray);
+    // echo '</pre>';
     return $returnarray;    
 }
 function easyPgn($game){

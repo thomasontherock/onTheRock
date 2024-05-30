@@ -6,7 +6,7 @@ require "showPosition.php";
 require "pgnBuilder.php";
 
 
-$sql = "SELECT game FROM game WHERE id='4'";
+$sql = "SELECT game FROM game WHERE id='7'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
@@ -51,10 +51,10 @@ function nextMove() {
     <?php
     $moveAmount = count($actions);
     if(isset($actions[($moveAmount - 1)][2][2]) && !$actions[($moveAmount - 1)][2][2] == "Unknown piece"){ 
-      echo "if (currentMove <". ($moveAmount + 0.4). "){";
+      echo "if (currentMove <". ($moveAmount + 0.4) - 1 . "){";
     } 
     else {
-      echo "if (currentMove <". ($moveAmount). "){";
+      echo "if (currentMove <". ($moveAmount) - 1 . "){";
     }
     ?>
     currentMove = currentMove + 1;    

@@ -1,5 +1,6 @@
 <?php
 function getRookMove($currentPos, $move, $isWhiteMove, $currentmove){
+    echo $move;
     $newPos = $currentPos;
     if($isWhiteMove){
         $piece = "wr";
@@ -8,45 +9,59 @@ function getRookMove($currentPos, $move, $isWhiteMove, $currentmove){
         $piece = "zr";
     } 
     $newPos[substr($move, -2)] = $piece; 
-    unset($newPos[findRook(substr($move, -2), $currentPos, $piece)]);
+    if ((strlen($move) == 4 && !str_contains($move, 'x')) || strlen($move) == 5){
+        echo 'hoi ' . $move[1];
+        unset($newPos[findRook(substr($move, -2), $currentPos, $piece, $move[1])]);
+    }
+    else{
+        unset($newPos[findRook(substr($move, -2), $currentPos, $piece)]);
+    }
     return $newPos;
 }
-function findRook($square, $currentPos, $piece){
+function findRook($square, $currentPos, $piece, $origin = false){
     $squaresToCheck = [];
     $array = [];
     for($i = (letterToNumber($square[0]) +1); $i < 8; $i++){
-        array_push($array, numberToLetter($i) . $square[1]);
+        if($origin == false || (is_numeric($origin) == false && numberToLetter($i) == $origin)){
+            array_push($array, numberToLetter($i) . $square[1]);
+        }
     }
     if(!empty($array)){
         array_push($squaresToCheck,  $array);
     }
     $array = [];    
     for(($i = letterToNumber($square[0]) -1); $i >= 0; $i--){
-        array_push($array, numberToLetter($i) . $square[1]);
+        if($origin == false || (is_numeric($origin) == false && numberToLetter($i) == $origin)){
+            array_push($array, numberToLetter($i) . $square[1]);
+        }
     }
     if(!empty($array)){
         array_push($squaresToCheck,  $array);
     }  
     $array = [];   
     for($i = $square[1] +1; $i <= 8; $i++){
-        array_push($array, $square[0] . $i);
+        if($origin == false || ($origin !== false && is_numeric($origin) == true && $i == $origin)){
+            array_push($array, $square[0] . $i);
+        }
     }
     if(!empty($array)){
         array_push($squaresToCheck,  $array);
     }  
     $array = [];   
     for($i = $square[1] -1; $i > 0; $i--){
-        array_push($array, $square[0] . $i);
+        if($origin == false || ($origin !== false && is_numeric($origin) == true && $i == $origin)){
+            array_push($array, $square[0] . $i);
+        }
     }
     if(!empty($array)){
         array_push($squaresToCheck,  $array);
     }
+    
     // echo '<pre>';
     // echo print_r($squaresToCheck);
     
-    // echo '</pre>';    
-    $newSquare = findOriginPiece($squaresToCheck, $currentPos, $piece);;
-    return $newSquare;
+    // echo '</pre>';
+    return findOriginPiece($squaresToCheck, $currentPos, $piece);   
 }
 function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){
     $newPos = $currentPos;
@@ -134,7 +149,7 @@ function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){
     }
     else{
         if(strlen($move) == 4){
-           // echo 'rookmove ' . $move;
+            echo 'rookmove ' . $move;
             if(is_numeric($move[1])){
                 $movedfrom = $newPos[$move[3] . $move[1]];
             }

@@ -11,8 +11,29 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
     $move = str_replace("#", "", $move);   
 
     if(str_contains($move, "=")){
-        //echo 'promotion at move ' . $move;
-    }
+        //echo 'promotion at move ' . $move;                 
+        echo "wajowe";
+        if(str_contains($move, "x")){
+            if($isWhiteMove){
+                unset($newPos[$move[0] . "7"]);
+                $newPos[$move[2] . $move[3]] = getPiece(substr($move, -1), true);
+            }
+            else{
+                unset($newPos[$move[0] . "2"]);
+                $newPos[$move[2] . $move[3]] = getPiece(substr($move, -1), false);
+                }
+            }  
+        else{
+            if($isWhiteMove){
+                unset($newPos[$move[0] . "7"]);
+                $newPos[$move[0] . $move[1]] = getPiece(substr($move, -1), true);
+            }
+            else{
+                unset($newPos[$move[0] . "2"]);
+                $newPos[$move[0] . $move[1]] = getPiece(substr($move, -1), false);
+                }
+            }   
+        }    
     elseif(str_contains($move, 'O-O-O')){
         if($isWhiteMove){
             unset($newPos["e1"]);
@@ -56,8 +77,8 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                     $movedfrom = $move[0] . ($move[3] - 1);
                     if(empty($currentPos[$newsquare]) && $currentPos[$move[2] . ($move[3]-1)] == "zp")
                     {
-                        echo 'en pasant move @' . $move; 
-                        unset($currentPos[$move[2] . ($move[3]-1)]);
+                        echo 'en pasant move @' . $move . '<br>'; 
+                        unset($newPos[$move[2] . ($move[3]-1)]);
                     }
                     if($currentPos[$movedfrom] != "wp"){
                         echo "error: uknown where pawn moved from @ " . $move;
@@ -67,7 +88,7 @@ function getNewPosition($currentPos, $move, $isWhiteMove, $currentmove){
                     if(empty($currentPos[$newsquare]) && $currentPos[$move[2] . ($move[3]+1)] == "wp")
                     {
                         echo 'en pasant move @' . $move; 
-                        unset($currentPos[$move[2] . ($move[3]+1)]);
+                        unset($newPos[$move[2] . ($move[3]+1)]);
                     }
                     $movedfrom = $move[0] . ($move[3] + 1);
                     if($currentPos[$movedfrom] != "zp"){

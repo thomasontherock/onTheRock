@@ -22,7 +22,7 @@ function getKingMove($currentPos, $move, $isWhiteMove, $currentmove){
             $rankDown = numberToLetter(letterToNumber($square[0]) -1);
         }
         $arrayToCheck = [];
-        if($square[0] != "8"){
+        if($square[1] != "8"){
             array_push($arrayToLook, $square[0] . $square[1] +1);
             array_push($arrayToCheck, $arrayToLook);
         }
@@ -41,7 +41,7 @@ function getKingMove($currentPos, $move, $isWhiteMove, $currentmove){
             array_push($arrayToLook, $rankUp . $square[1]);
             array_push($arrayToCheck, $arrayToLook);
             $arrayToLook = [];
-            if($square[0] != "8"){
+            if($square[1] != "8"){
                 array_push($arrayToLook, $rankUp . $square[1] +1);
                 array_push($arrayToCheck, $arrayToLook);
             }
@@ -56,15 +56,15 @@ function getKingMove($currentPos, $move, $isWhiteMove, $currentmove){
             array_push($arrayToLook, $rankDown . $square[1]);
             array_push($arrayToCheck, $arrayToLook);
             $arrayToLook = [];
-            if($square[0] != "8"){
+            if($square[1] != "8"){
                 array_push($arrayToLook, $rankDown . $square[1] +1);
                 array_push($arrayToCheck, $arrayToLook);
             }
         }
-        echo 'kingmove ' . $square;
-        echo '<pre>';
-        echo print_r($arrayToCheck);
-        echo '</pre>';
+        // echo 'kingmove ' . $square;
+        // echo '<pre>';
+        // echo print_r($arrayToCheck);
+        // echo '</pre>';
         return findOriginPiece($arrayToCheck,$currentPos,$piece);
     }
     

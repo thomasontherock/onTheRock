@@ -6,7 +6,7 @@ require "showPosition.php";
 require "pgnBuilder.php";
 
 
-$sql = "SELECT game FROM game WHERE id='7'";
+$sql = "SELECT game FROM game WHERE id='13'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row

@@ -56,11 +56,6 @@ function findRook($square, $currentPos, $piece, $origin = false){
     if(!empty($array)){
         array_push($squaresToCheck,  $array);
     }
-    
-    // echo '<pre>';
-    // echo print_r($squaresToCheck);
-    
-    // echo '</pre>';
     return findOriginPiece($squaresToCheck, $currentPos, $piece);   
 }
 function getRookMove_old($currentPos, $move, $isWhiteMove, $currentmove){
